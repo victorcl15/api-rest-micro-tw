@@ -43,6 +43,8 @@ services :
       - "4039:80"
     networks : 
       - proyectos-app
-
+    envoriment: 
+      - MONGO_DB_URI=${MONGO_DB_URI}
+      - port=4038
 networks : 
   proyectos-app :  
