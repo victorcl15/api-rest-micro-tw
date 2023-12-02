@@ -15,7 +15,10 @@ pipeline {
                     withCredentials([
                        string(credentialsId: 'MONGO_DB_URI', variable: 'MONGO_DB_URI')
                     ]) {
-                        docker.build('loader-balancer:v1', "--build-arg MONGO_DB_URI=${MONGO_DB_URI} .")
+                        sh """
+                            docker build --build-arg MONGO_DB_URI=${MONGO_DB_URI} -t loader-balancer:v1 .
+                            """  
+                        //docker.build('loader-balancer:v1', "--build-arg MONGO_DB_URI=${MONGO_DB_URI} .")
 
                         }
                     
@@ -29,9 +32,12 @@ pipeline {
                     withCredentials([
                        string(credentialsId: 'MONGO_DB_URI', variable: 'MONGO_DB_URI')
                     ]) {
-                        sh """
+                       /* sh """
                             sed '${MONGO_DB_URI}' docker-compose.yml > docker-compose-updated.yml
                             docker-compose -f docker-compose-updated.yml up -d
+                        """*/
+                        sh """
+                            docker-compose -f docker-compose.yml up -d
                         """
 
                         }
